@@ -5,7 +5,6 @@ import {
   GetDataFromChromeStorage,
   UpdateValueInChromeStorage,
   SaveValueInChromeStorage,
-  UpdateExtensionBadge
 } from "./CustomFunctions";
 import { FaPlay, FaPause } from "react-icons/fa";
 import "./Popup.css";
@@ -14,22 +13,18 @@ const Popup = () => {
   const [isScraping, setisScraping] = useState(false);
   const [isScrapingCurrentPage, setisScrapingCurrentPage] = useState(false);
 
-  GetDataFromChromeStorage("isScraping").then((res) => {
+  GetDataFromChromeStorage("isScraping",null).then((res) => {
     if (res != null) {
       setisScraping(res);
     } else {
       SaveValueInChromeStorage("isScraping", false);
-      GetDataFromChromeStorage("isScraping").then((res) => console.log(res));
     }
   });
-  GetDataFromChromeStorage("isScrapingCurrentPage").then((res) => {
+  GetDataFromChromeStorage("isScrapingCurrentPage",null).then((res) => {
     if (res != null) {
       setisScrapingCurrentPage(res);
     } else {
       SaveValueInChromeStorage("isScrapingCurrentPage", false);
-      GetDataFromChromeStorage("isScrapingCurrentPage").then((res) =>
-        console.log(res)
-      );
     }
   });
 
@@ -60,12 +55,7 @@ const Popup = () => {
   };
 
   const ClearCollectedJobs=()=>{
-    // UpdateValueInChromeStorage("CollectedJobs", [],);
-    chrome.storage.local.clear(()=>{
-      console.log("Storage Cleared");
-      chrome.action.setBadgeText({ text:"0"})
-    });
-
+    UpdateValueInChromeStorage("CollectedJobs", []);
   }
 
   return (

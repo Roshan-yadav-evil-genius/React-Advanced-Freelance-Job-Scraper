@@ -32,11 +32,16 @@ export const BroadCast = (from, msg) => {
 	SendMsgToPage(from, msg)
 }
 
-export const GetDataFromChromeStorage = (key) => {
+export const GetDataFromChromeStorage = (key, defaultvalue) => {
 	return new Promise((resolve, reject) => {
 		chrome.storage.local.get([key], (result) => {
-			let data = Boolean(Object.keys(result).length) ? result[key] : null
-			resolve(data)
+			if (key in result) {
+				resolve(result[key])
+			} else {
+				console.log(`Initializing : ${key} with default value : ${defaultvalue}`)
+				resolve(defaultvalue)
+				SaveValueInChromeStorage(key, defaultvalue)
+			}
 		})
 	})
 }
@@ -47,26 +52,13 @@ export const SaveValueInChromeStorage = (key, value) => {
 }
 
 export const UpdateValueInChromeStorage = (key, value, overWrite = true) => {
-	GetDataFromChromeStorage(key).then((data) => {
+	GetDataFromChromeStorage(key, []).then((data) => {
 		if (overWrite) {
 			SaveValueInChromeStorage(key, value)
 		} else {
-			chrome.storage.local.get([key], (result) => {
-				let prevdata = Boolean(Object.keys(result).length) ? result[key] : []
-				let newData = prevdata.concat(value);
-				chrome.storage.local.set({ [key]: newData })
-			})
+			let newData = data.concat(value);
+			SaveValueInChromeStorage(key, newData)
 		}
 	})
 }
 
-export const UpdateExtensionBadge = () => {
-	GetDataFromChromeStorage("CollectedJobs").then((data) => {
-		if (data === null || data===undefined) {
-			chrome.action.setBadgeText({ text: "0" })
-		}else{
-		// check if data is aarray or not
-			chrome.action.setBadgeText({ text: JSON.stringify(data.length) })
-		}
-	})
-}

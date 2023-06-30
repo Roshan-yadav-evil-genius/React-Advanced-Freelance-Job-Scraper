@@ -41,8 +41,8 @@ const Scrape = (ContinueScraping = true) => {
 		if (ContinueScraping) {
 			console.log("👩‍💻 Scraping Page No: ", GetPageNo());
 			document.querySelectorAll("fl-project-contest-card").forEach((job) => ExtractData(job));
-			UpdateValueInChromeStorage("CollectedJobs", CollectedJobs,false);
-			SendMessageToRuntime("Popup","Background", { action: "UpdateExtensionBadge"});
+			UpdateValueInChromeStorage("CollectedJobs",CollectedJobs,false);
+			CollectedJobs=[]
 			let nextPageBtn = document.querySelector("fl-bit.PaginationItem[data-show-mobile]:nth-of-type(4) button") as HTMLButtonElement;
 			if (!nextPageBtn.disabled) {
 				nextPageBtn.click()

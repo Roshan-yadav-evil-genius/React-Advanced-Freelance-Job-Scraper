@@ -1,11 +1,8 @@
-import { SaveValueInChromeStorage, GetDataFromChromeStorage } from "./CustomFunctions"
+import { GetDataFromChromeStorage } from "./CustomFunctions"
 
 console.log("👨🏿‍🔬 Backdround Service Worker MainFile Executed");
 
-// GetDataFromChromeStorage("CollectedJobs").then((data) => {
-//     console.log("Collected Jobs");
-//     console.log(data);
-// })
+
 chrome.runtime.onInstalled.addListener(() => {
     console.log("👨🏿‍🔬 Backdround Service Worker Installed");
     GetDataFromChromeStorage("CollectedJobs", []).then((data) => {

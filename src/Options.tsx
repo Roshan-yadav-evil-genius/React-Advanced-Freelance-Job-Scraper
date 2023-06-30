@@ -23,5 +23,5 @@ chrome.runtime.onMessage.addListener((msg,sender,sendResponse)=>{
 
 const root = document.createElement('div')
 root.id = 'root'
-document.body.appendChild(root)
+document.body.insertBefore(root, document.body.firstChild)
 ReactDOM.createRoot(root).render(<Options />)
